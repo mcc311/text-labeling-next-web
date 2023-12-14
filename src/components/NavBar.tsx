@@ -1,8 +1,9 @@
 'use client'
  
-import { usePathname } from 'next/navigation'
+import { Avatar, Button, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { usePathname } from 'next/navigation';
 import React from "react";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, NavbarMenuToggle, NavbarMenu, NavbarMenuItem} from "@nextui-org/react";
 import Logo from "./Logo";
 
 export default function NavBar() {
@@ -11,6 +12,8 @@ export default function NavBar() {
     "首頁",
     "任務",
   ];
+
+  const { data: session } = useSession()
 
   interface LinkItem {
     name: string;
@@ -44,7 +47,7 @@ export default function NavBar() {
         {links.map((link) => (
           <NavbarItem key={link.name}>
             <Link
-              color={pathname === link.href ? "warning" : "foreground"}
+              color={pathname === link.href ? "primary" : "foreground"}
               href={link.href}
             >
               {link.name}
@@ -53,22 +56,41 @@ export default function NavBar() {
         ))}
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      {/* <NavbarContent justify="end">
+
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+           <LoginButton />
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="warning" href="#" variant="flat">
+          <Button as={Link} color="primary" href="#" variant="flat">
             Sign Up
           </Button>
         </NavbarItem>
-      </NavbarContent>
+      </NavbarContent> */}
+      {session && session.user ? (
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Button onClick={() => signOut()}>Sign out</Button>
+          </NavbarItem>
+          <NavbarItem className="hidden lg:flex">
+            <Avatar name={session.user.name as string} />
+          </NavbarItem>
+          
+        </NavbarContent>
+      ) : (
+        <NavbarContent justify="end">
+          <NavbarItem className="lg:flex">
+            <Button onClick={() => signIn()} color='primary'>登入</Button>
+          </NavbarItem>
+        </NavbarContent>
+      )}
+
 
       <NavbarMenu>
         {links.map((link) => (
           <NavbarMenuItem key={link.name}>
             <Link
-              color={pathname === link.href ? "warning" : "foreground"}
+              color={pathname === link.href ? "primary" : "foreground"}
               href={link.href}
             >
               {link.name}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import NavBar from '@/components/NavBar'
-
+import { SessionProvider } from '@utils/sessionProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,18 +17,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <main className="flex flex-col min-h-screen">
-          <NavBar />
-          <div className="container mx-auto max-w-3xl p-4">
-            <div className="flex-auto  min-w-0 pt-6 lg:px-8 lg:pt-8 pb:12 xl:pb-24 lg:pb-16 max-w-5xl">
-              {children}
+    <SessionProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <main className="text-foreground bg-background">
+            <NavBar />
+            <div className="container mx-auto max-w-3xl p-4">
+              <div className="flex-auto  min-w-0 pt-6 lg:px-8 lg:pt-8 pb:12 xl:pb-24 lg:pb-16 max-w-5xl">
+                {children}
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
 
-      </body>
-    </html>
+        </body>
+      </html>
+    </SessionProvider>
   )
 }
