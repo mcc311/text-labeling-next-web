@@ -57,6 +57,13 @@ const config: Config = {
                 "0px 0px 30px 0px rgb(0 0 0 / 0.04), 0px 30px 60px 0px rgb(0 0 0 / 0.12), 0px 0px 1px 0px rgb(0 0 0 / 0.3)",
             },
           },
+          colors: {
+            primary: {
+              DEFAULT: "#f0941d",
+            },
+            focus: "#FAEAD7",
+          },
+        
         },
         dark: {
           layout: {

@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 h1 {
-  @apply inline-block mb-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white
+  @apply text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-5xl tracking-tight text-center dark:text-white
 }
 
 h2 {
-  @apply text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white
+  @apply text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white
 }
 
 h3 {
@@ -27,5 +27,5 @@ h6 {
 }
 
 p {
-  @apply text-base text-gray-700 dark:text-gray-300
+  @apply mt-6 text-lg text-slate-600 max-w-3xl mx-auto dark:text-slate-400
 }

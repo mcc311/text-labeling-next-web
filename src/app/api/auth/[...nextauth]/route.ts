@@ -10,15 +10,17 @@ const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
+        email: { label: "Email", type: "text" },
         accessToken: { label: "Access Token", type: "text" }
       },
       async authorize(credentials) {
         if (credentials?.accessToken) {
           // Logic for validating access token
           const user = await prisma.user.findUnique({
-            where: { access_token: credentials.accessToken },
+            // where: { access_token: credentials.accessToken },
+            where: { email: credentials.email },
           });
-          if (user && user.allow_login_without_password) {
+          if (user && user.access_token === credentials.accessToken) {
             return { id: user.id.toString(), name: user.name };
           }
         }

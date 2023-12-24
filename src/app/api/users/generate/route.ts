@@ -1,15 +1,14 @@
 // app/api/users/generate.ts
-import { PrismaClient } from '@prisma/client';
 import { generateAccessToken } from '@utils/tokenGenerator'; // We will create this utility
 
-const prisma = new PrismaClient();
+import prisma from '@/utils/prisma';
 
 export async function POST(request: Request) {
   const { nNewUsers } = await request.json();
 
   try {
     const users = [];
-    let csvContent = "data:text/csv;charset=utf-8,Access Token\n"; // CSV header
+    let csvContent = "Access Token\n"; // CSV header
 
     for (let i = 0; i < nNewUsers; i++) {
       const accessToken = generateAccessToken(6); // 6-digit token
@@ -22,7 +21,6 @@ export async function POST(request: Request) {
       users.push(user);
       csvContent += `${user.access_token}\n`; // Append each user to CSV content
     }
-
     await prisma.user.createMany({
       data: users,
       skipDuplicates: true,

@@ -10,12 +10,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String?   @unique
-  name      String
-  password  String
-  access_token String @unique
-  allow_login_without_password Boolean @default(false)
+  id                           Int          @id @default(autoincrement())
+  email                        String?      @unique
+  name                         String
+  access_token                 String       
+  submissions                  Submission[]
+}
+
+model Task {
+  id               Int      @id @default(autoincrement())
+  name             String
+  shortDescription String
+  fullDescription  String
+  prompts          Prompt[]
+}
+
+model Prompt {
+  id          Int
+  taskId      Int
+  content     String
+  task        Task         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  responses   Response[]
+  submissions Submission[]
+
+  @@id([id, taskId]) // Composite primary key
+}
+
+model Response {
+  id           Int
+  content      String
+  promptTaskId Int
+  promptId     Int
+  prompt       Prompt @relation(fields: [promptId, promptTaskId], references: [id, taskId], onDelete: Cascade)
+
+  @@unique([id, promptId, promptTaskId]) // Ensure the combination is unique
+}
+
+model Submission {
+  id     Int   @id @default(autoincrement())
+  userId Int
+  Rank   Int[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  prompt       Prompt   @relation(fields: [promptId, promptTaskId], references: [id, taskId], onDelete: Cascade)
+  user         User?     @relation(fields: [userId], references: [id], onDelete: NoAction)
+  promptId     Int
+  promptTaskId Int
 }
